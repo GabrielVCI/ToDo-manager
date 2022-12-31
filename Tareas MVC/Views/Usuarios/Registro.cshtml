@@ -1,0 +1,38 @@
+﻿@model RegistroViewModel
+
+@{
+    ViewData["Title"] = "Registro";
+}
+
+<h1>Registrate</h1>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Registro">
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label><br>
+                <input asp-for="Email" class="form-control" /><br>
+                <span asp-validation-for="Email"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label><br>
+                <input asp-for="Password" class="form-control" /><br>
+                <span asp-validation-for="Password"></span>
+            </div>
+
+            <button class="btn btn-primary">Registrate</button>
+            <a class="btn btn-success" asp-action="login">Deseo Logearme</a>
+ 
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+ 
