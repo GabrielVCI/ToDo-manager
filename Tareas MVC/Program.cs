@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using Tareas_MVC;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +18,7 @@ var politicaUsuariosAutenticados = new AuthorizationPolicyBuilder()
 builder.Services.AddControllersWithViews(opciones =>
 {
     opciones.Filters.Add(new AuthorizeFilter(politicaUsuariosAutenticados));
-});
+}).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -44,7 +47,26 @@ builder.Services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.Ap
         opciones.AccessDeniedPath = "/usuarios/login";
     });
 
+//Necesitamos este servicio para globalizar la aplicacion, es decir, que soporte cualquier idioma, caractér, etc.
+builder.Services.AddLocalization(opciones =>
+{
+    opciones.ResourcesPath = "Recursos";
+}); 
+
 var app = builder.Build();
+
+var culturasUISoportadas = new[] { "es", "en" };
+
+//Especificando las culturas que vamos a mostrar en la aplicacion. 
+app.UseRequestLocalization(opciones =>
+{
+    //El idioma que aparecera por defecto
+    opciones.DefaultRequestCulture = new RequestCulture("es");
+
+    //Los idiomas que podemos mostrar (es - en)
+    opciones.SupportedCultures = culturasUISoportadas
+    .Select(cultura => new CultureInfo(cultura)).ToList();
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
