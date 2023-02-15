@@ -13,9 +13,5 @@ namespace Tareas_MVC.Models
         [Display]
         public bool Recuerdame { get; set;}
 
-        
-        
-
-        
     }
 }

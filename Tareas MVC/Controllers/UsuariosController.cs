@@ -144,7 +144,7 @@ namespace Tareas_MVC.Controllers
 
             if (info is null)
             {
-                mensaje = $"Mensaje del proveedor externo: {remoteError}";
+                mensaje = $"Mensaje del proveedor externo: {remoteError}";  
                 return RedirectToAction("login", routeValues: new { mensaje });
             }
 
@@ -206,7 +206,6 @@ namespace Tareas_MVC.Controllers
         [Authorize(Roles = Constantes.RolAdmin)]
         public async Task<IActionResult> Listado(string mensaje = null)
         {
-
             var usuario = await context.Users.Select(u => new UsuarioViewModel
             {
                 Email = u.Email,

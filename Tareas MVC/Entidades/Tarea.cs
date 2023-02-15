@@ -14,7 +14,7 @@ namespace Tareas_MVC.Entidades
         public DateTime FechaCreacion { get; set; }
 
         // Esto es como si fuera una Foreign Key.
-        public IdentityUser UsuarioCreacionId { get; set; }
+        public  IdentityUser UsuarioCreacionId { get; set; }
         public List<Pasos> Pasos { get; set; } 
         public List<ArchivosAdjuntos> ArchivosAdjuntos { get; set; }
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Tareas_MVC;
+using Tareas_MVC.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,7 +52,9 @@ builder.Services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.Ap
 builder.Services.AddLocalization(opciones =>
 {
     opciones.ResourcesPath = "Recursos";
-}); 
+});
+
+builder.Services.AddTransient<IServiciosUsuarios, ServiciosUsuarios>();
 
 var app = builder.Build();
 
