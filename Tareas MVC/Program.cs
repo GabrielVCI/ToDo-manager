@@ -56,6 +56,8 @@ builder.Services.AddLocalization(opciones =>
 
 builder.Services.AddTransient<IServiciosUsuarios, ServiciosUsuarios>();
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 var app = builder.Build();
 
 var culturasUISoportadas = new[] { "es", "en" };

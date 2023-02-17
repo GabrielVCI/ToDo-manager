@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 namespace Tareas_MVC.Servicios
 {
-    public interface IServiciosUsuarios
+    public interface IServiciosUsuarios 
     {
         string ObtenerUsuarioId();
     }
@@ -20,7 +20,8 @@ namespace Tareas_MVC.Servicios
         {
             if (httpContext.User.Identity.IsAuthenticated)
             {
-                var idClaim = httpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault();
+                var idClaim = httpContext.User.Claims.Where
+                    (x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault();
 
                 return idClaim.Value;
             }

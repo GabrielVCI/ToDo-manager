@@ -12,9 +12,10 @@ namespace Tareas_MVC.Entidades
         public string Descrpcion { get; set; }
         public int Orden { get; set; }
         public DateTime FechaCreacion { get; set; }
+        public string UsuarioCreacionId { get; set; }
 
         // Esto es como si fuera una Foreign Key.
-        public  IdentityUser UsuarioCreacionId { get; set; }
+        public IdentityUser UsuarioCreacion { get; set; }
         public List<Pasos> Pasos { get; set; } 
         public List<ArchivosAdjuntos> ArchivosAdjuntos { get; set; }
 

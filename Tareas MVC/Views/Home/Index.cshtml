@@ -13,14 +13,19 @@
 </div>
 
 <div class="text-center" id="contenedor-listado-tareas">
-    <div class="text-start" data-bind="foreach: tarea">
+    <div id="reordenable" class="text-start" data-bind="foreach: tarea">
         <div name="tarea" class="border mb-2 p-2" style="cursor: pointer"> @*add border here in class*@
             <div data-bind="text: titulo, hidden: esNuevo" class="fw-bold">
                 
             </div>
 
-            <input type ="text" name="titulo-tarea" autocomplete="off" data-bind="value: titulo, visible: esNuevo, 
-            event: {focusout: manejarFocusoutTituloTarea}" onfocus/>
+            <input type ="text" 
+                name="titulo-tarea" 
+                autocomplete="off" 
+                data-bind="value: titulo, 
+                           visible: esNuevo, 
+                           attr: {'data-id': id},
+                           event: {focusout: manejarFocusoutTituloTarea}"/>
         </div>
     </div>
 
@@ -33,11 +38,12 @@
     </div>
 </div>
 @section Scripts{
-    <script asp-append-version="true" src="~/js/Tareas.js">
-
-    </script>
+    <script asp-append-version="true" src="~/js/Tareas.js"></script>
+    <script asp-append-version="true" src="~/js/utilidades.js"></script>
 
     <script>
+
+        const UrlTareas = '/api/tareas';
         function ListadoTareasViewModelFn() {
             var self = this;
             self.tarea = ko.observableArray([]);
@@ -66,10 +72,7 @@
 
         const ListadoTareasViewModel = new ListadoTareasViewModelFn();
 
-        setTimeout(() => {
-            //ListadoTareasViewModel.tarea.push({titulo: 'Tarea 1'});
-            ListadoTareasViewModel.cargando(false);
-        }, 100)
+        ObtenerTareas();
 
         ko.applyBindings(ListadoTareasViewModel, document.getElementById('contenedor-listado-tareas'));
 
