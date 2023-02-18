@@ -13,20 +13,26 @@
 </div>
 
 <div class="text-center" id="contenedor-listado-tareas">
-    <div id="reordenable" class="text-start" data-bind="foreach: tarea">
-        <div name="tarea" class="border mb-2 p-2" style="cursor: pointer"> @*add border here in class*@
-            <div data-bind="text: titulo, hidden: esNuevo" class="fw-bold">
-                
-            </div>
+    <div id="reordenable" 
+        class="text-start" 
+        data-bind="foreach: tarea">
+            <div name="tarea" 
+                class="border mb-2 p-2" 
+                style="cursor: pointer" 
+                data-bind="click: manejarClickTarea">
 
-            <input type ="text" 
-                name="titulo-tarea" 
-                autocomplete="off" 
-                data-bind="value: titulo, 
-                           visible: esNuevo, 
-                           attr: {'data-id': id},
-                           event: {focusout: manejarFocusoutTituloTarea}"/>
-        </div>
+                    <div data-bind="text: titulo, hidden: esNuevo" 
+                         class="fw-bold">
+                    </div>
+
+                    <input type ="text" 
+                           name="titulo-tarea" 
+                           autocomplete="off" 
+                           data-bind="value: titulo, 
+                                   visible: esNuevo, 
+                                   attr: {'data-id': id},
+                                   event: {focusout: manejarFocusoutTituloTarea}"/>
+            </div>
     </div>
 
     <div data-bind="visible: cargando" class="spinner-border">
@@ -37,13 +43,20 @@
         <h2>No hay tareas para mostrar.</h2>
     </div>
 </div>
+
+<partial name="_ModalEditarTarea" />
+
+
 @section Scripts{
     <script asp-append-version="true" src="~/js/Tareas.js"></script>
     <script asp-append-version="true" src="~/js/utilidades.js"></script>
 
     <script>
 
+
         const UrlTareas = '/api/tareas';
+
+        //const 
         function ListadoTareasViewModelFn() {
             var self = this;
             self.tarea = ko.observableArray([]);
@@ -66,9 +79,15 @@
              self.esNuevo = ko.pureComputed(function (){
 
                  return self.id() == 0;
-             })
+             });
 
         }
+
+        const tareaEditarViewModel = {
+            id: 0,
+            titulo: ko.observable(''),
+            descripcion: ko.observable('')
+        } 
 
         const ListadoTareasViewModel = new ListadoTareasViewModelFn();
 

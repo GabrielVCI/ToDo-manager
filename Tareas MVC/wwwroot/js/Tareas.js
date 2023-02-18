@@ -78,8 +78,7 @@ async function actualizarOrdenTareas() {
     ListadoTareasViewModel.tarea([]);
     ListadoTareasViewModel.tarea(arregloOrdenado);
 
-    console.log("actualizar orden", arregloOrdenado, ids)
-}
+ }
 
 //Funcion para obtener el id de las tarea
 function obtenerIdTareas() {
@@ -87,7 +86,7 @@ function obtenerIdTareas() {
         return $(this).attr("data-id");
     }).get();
 
-    console.log("Obtener ids de las tareas ", ids)
+ 
     return ids;
 }
 
@@ -103,6 +102,34 @@ async function enviarIdsTareasAlBackend(ids) {
             'Content-Type': 'application/json'
         }
     });
+}
+
+async function manejarClickTarea(tarea) {
+
+    if (tarea.esNuevo()) {
+        console.log("qa")
+        return;
+    }
+
+    const respuesta = await fetch(`${UrlTareas}/${tarea.id()}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!respuesta.ok) {
+        manejarErrorApi(respuesta);
+        console.log("Algo mas");
+        return;
+    }
+
+    const json = await respuesta.json();
+    console.log(json);
+
+    tareaEditarViewModel.id = json.id;
+    tareaEditarViewModel.titulo(json.titulo);
+    tareaEditarViewModel.descripcion(json.descripcion);
 }
 
 $(function () {
