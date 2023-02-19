@@ -12,15 +12,16 @@
                 <div class="row">
                     <div class="col-lg-9">
                         <div class="fform-floating mb-3">
+                            <label for="txtTituloCrearTarea">Título de la tarea</label>
                             <input type="text" class="form-control" id="txtTituloCrearTarea" 
-                            placeholder="titulo" data-bind="value: titulo" />
-                            <label for="txtTituloCrearTarea">Titulo de la tarea</label>
+                            placeholder="titulo" 
+                            data-bind="value: titulo, event: {change: manejarCambioEditarTarea}"/>
                         </div>
 
                         <div class="mb-3">
-                            <label>Descripcion</label>
+                            <label>Descripción</label>
                             <textarea type="text" class="form-control" rows="4"
-                                      data-bind="value: descripcion"></textarea>
+                            data-bind="value: descripcion, event: {change: manejarCambioEditarTarea}"></textarea>
                         </div>
                     </div>
 

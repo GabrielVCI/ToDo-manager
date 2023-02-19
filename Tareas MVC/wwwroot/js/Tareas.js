@@ -85,7 +85,6 @@ function obtenerIdTareas() {
     const ids = $("[name=titulo-tarea]").map(function () {
         return $(this).attr("data-id");
     }).get();
-
  
     return ids;
 }
@@ -107,7 +106,6 @@ async function enviarIdsTareasAlBackend(ids) {
 async function manejarClickTarea(tarea) {
 
     if (tarea.esNuevo()) {
-        console.log("qa")
         return;
     }
 
@@ -120,16 +118,55 @@ async function manejarClickTarea(tarea) {
 
     if (!respuesta.ok) {
         manejarErrorApi(respuesta);
-        console.log("Algo mas");
         return;
     }
 
     const json = await respuesta.json();
-    console.log(json);
-
+   
     tareaEditarViewModel.id = json.id;
     tareaEditarViewModel.titulo(json.titulo);
     tareaEditarViewModel.descripcion(json.descripcion);
+
+    modalEditarTareaBootstrap.show();
+}
+
+async function manejarCambioEditarTarea() {
+
+    const obj = {
+        id: tareaEditarViewModel.id,
+        titulo: tareaEditarViewModel.titulo(),
+        descripcion: tareaEditarViewModel.descripcion()
+    };
+
+    if (!obj.titulo) {
+        return;
+    }
+
+    await editarTareaCompleta(obj);
+
+    const index = ListadoTareasViewModel.tarea().findIndex(t => t.id() === obj.id);
+    const tarea = ListadoTareasViewModel.tarea()[index];
+
+    tarea.titulo(obj.titulo);
+    
+}
+
+async function editarTareaCompleta(tarea) {
+
+    const data = JSON.stringify(tarea);
+
+    const respuesta = await fetch(`${UrlTareas}/${tarea.id}`, {
+        method: 'PUT',
+        body: data,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!respuesta.ok) {
+        manejarErrorApi(respuesta);
+        throw "error";
+    }
 }
 
 $(function () {
