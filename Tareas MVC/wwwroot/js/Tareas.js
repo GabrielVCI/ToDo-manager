@@ -127,6 +127,14 @@ async function manejarClickTarea(tarea) {
     tareaEditarViewModel.titulo(json.titulo);
     tareaEditarViewModel.descripcion(json.descripcion);
 
+    tareaEditarViewModel.pasos([]);
+
+    json.pasos.forEach(paso => {
+        tareaEditarViewModel.pasos.push(
+            new pasoViewModel({ ...paso, ModoEdicion: false })
+        )
+    })
+
     modalEditarTareaBootstrap.show();
 }
 
@@ -156,7 +164,7 @@ async function editarTareaCompleta(tarea) {
     const data = JSON.stringify(tarea);
 
     const respuesta = await fetch(`${UrlTareas}/${tarea.id}`, {
-        method: 'PUT',
+        method: 'PUT', 
         body: data,
         headers: {
             'Content-Type': 'application/json'
@@ -167,6 +175,56 @@ async function editarTareaCompleta(tarea) {
         manejarErrorApi(respuesta);
         throw "error";
     }
+}
+
+function intentarBorrarTarea(tarea) {
+
+    modalEditarTareaBootstrap.hide();
+
+    confirmarAccion({
+        callbackAceptar: () => {
+            borrarTarea(tarea)
+        },
+
+        callBackCancelar: () => {
+            modalEditarTareaBootstrap.show();
+        },
+
+        titulo: `¿Desea borrar la tarea ${tarea.titulo()}?`
+    });
+}
+
+
+async function borrarTarea(tarea) {
+
+    const idtarea = tarea.id;
+
+    const respuesta = await fetch(`${UrlTareas}/${idtarea}`, {
+
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (respuesta.ok) {
+
+        const indice = obtenerIndiceTareaEnEdicion();
+        
+        window.location.reload();
+                                            
+        ListadoTareasViewModel.tarea.splice(indice, 1);
+    }
+}
+
+function obtenerIndiceTareaEnEdicion() {
+    return ListadoTareasViewModel.tarea().findIndex(t => t.id == tareaEditarViewModel.id)
+}
+
+function obtenerTareaEnEdicion() {
+
+    const indice = obtenerIndiceTareaEnEdicion();
+    return ListadoTareasViewModel.tarea()[indice];
 }
 
 $(function () {

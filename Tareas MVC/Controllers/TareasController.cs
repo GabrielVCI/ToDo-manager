@@ -8,7 +8,7 @@ using Tareas_MVC.Servicios;
 
 namespace Tareas_MVC.Controllers
 {
-   
+
     //Usando un controller en forma de WebApi, que retornann archivos JSON en vez de las vistas tradicionales.
     [Route("api/tareas")]
     public class TareasController : ControllerBase
@@ -43,8 +43,9 @@ namespace Tareas_MVC.Controllers
         {
             var usuarioId = serviciosUsuarios.ObtenerUsuarioId();
 
-            var tarea = await _context.Tareas.FirstOrDefaultAsync(t => t.Id == id &&
-            t.UsuarioCreacionId == usuarioId);
+            var tarea = await _context.Tareas
+                .Include(t => t.Pasos.OrderBy(t => t.Orden))
+                .FirstOrDefaultAsync(t => t.Id == id && t.UsuarioCreacionId == usuarioId);
 
             if (tarea is null)
             {
@@ -69,10 +70,28 @@ namespace Tareas_MVC.Controllers
             }
 
             tarea.Titulo = tareaEditarDTO.Titulo;
-            tarea.Descrpcion = tareaEditarDTO.Descripcion;
+            tarea.Descripcion = tareaEditarDTO.Descripcion;
 
             await _context.SaveChangesAsync();
 
+            return Ok();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var usuarioId = serviciosUsuarios.ObtenerUsuarioId();
+
+            var tarea = await _context.Tareas.FirstOrDefaultAsync(tarea => tarea.Id == id &&
+            tarea.UsuarioCreacionId == usuarioId);
+
+            if (tarea is null)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(tarea);
+            await _context.SaveChangesAsync();
             return Ok();
         }
 

@@ -23,3 +23,23 @@ function mostrarMensajeError(mensaje) {
         text: mensaje
     });
 }
+
+function confirmarAccion({ callbackAceptar, callBackCancelar, titulo }) {
+
+    Swal.fire({
+
+        title: titulo || 'Esta accion no se puede retroceder',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si',
+        focusConfirm: true
+    }).then((resultado => {
+        if (resultado.isConfirmed) {
+            callbackAceptar();
+        } else if (callBackCancelar) {
+            callBackCancelar();
+        }
+    }))
+}

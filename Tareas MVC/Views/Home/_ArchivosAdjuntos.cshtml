@@ -1,0 +1,17 @@
+﻿<label><i class="bi bi-paperclip"></i>Archivos Adjuntos</label>
+
+<button class="btn btn-secondary" onclick="manejarClickAgregarArchivoAdjunto()"><i class="bg-info bi-plus"></i></button>
+
+<input type="file" multiple id="archivoATarea" style="display: none" />
+
+<div data-bind="foreach: archivosAdjuntos">
+    <div>
+        <div style="cursor: pointer" data-bind="text: titulo"></div>
+
+        <div>
+            Agregado <span data-bind="text: publicado"></span> - 
+            <span class="fw-bold" style="cursor: pointer">Borrar</span> - 
+            <span class="fw-bold" style="cursor: pointer">Descargar</span>
+        </div>
+    </div>
+</div>

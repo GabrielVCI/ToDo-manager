@@ -9,7 +9,7 @@ namespace Tareas_MVC.Entidades
         [Required]
         [StringLength(250)]
         public string Titulo { get; set; }
-        public string Descrpcion { get; set; }
+        public string Descripcion { get; set; }
         public int Orden { get; set; }
         public DateTime FechaCreacion { get; set; }
         public string UsuarioCreacionId { get; set; }

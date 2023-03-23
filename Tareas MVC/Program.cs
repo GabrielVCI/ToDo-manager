@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using System.Text.Json.Serialization;
 using Tareas_MVC;
 using Tareas_MVC.Servicios;
 
@@ -21,7 +22,10 @@ builder.Services.AddControllersWithViews(opciones =>
     opciones.Filters.Add(new AuthorizeFilter(politicaUsuariosAutenticados));
 }).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddJsonOptions(opciones =>
+{
+    opciones.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 
 builder.Services.AddDbContext<ApplicationDbContext>
     (opciones => opciones.UseSqlServer("name=DefaultConnection"));

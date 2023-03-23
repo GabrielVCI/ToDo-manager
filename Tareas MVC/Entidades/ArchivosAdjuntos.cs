@@ -5,7 +5,6 @@ namespace Tareas_MVC.Entidades
 {
     public class ArchivosAdjuntos
     {
-
         public Guid Id { get; set; }
         public int TareaId { get; set; }
         public Tarea Tarea{ get; set; }
