@@ -25,7 +25,7 @@ namespace Tareas_MVC.Controllers
 
         [HttpPost("{tareaId:int}")]
         public async Task<ActionResult<IEnumerable<ArchivosAdjuntos>>> Post(int tareaId, 
-            [FromForm] IEnumerable<IFormFile> archivo) //FromForm permite recibir archivos por medio del API.
+            [FromForm] IEnumerable<IFormFile> archivos) //FromForm permite recibir archivos por medio del API.
         {
 
             var usuarioId = serviciosUsuario.ObtenerUsuarioId();
@@ -48,11 +48,11 @@ namespace Tareas_MVC.Controllers
 
             if (existenArchivosAdjuntos)
             {
-                var archivos = await context.ArchivosAdjuntos.Where(a => a.TareaId == tareaId)
+                ordenMayor = await context.ArchivosAdjuntos.Where(a => a.TareaId == tareaId)
                     .Select(o => o.Orden).MaxAsync();
             }
 
-            var resultado = await almacenadorArchivos.Almacenar(contenedor, archivo);
+            var resultado = await almacenadorArchivos.Almacenar(contenedor, archivos);
 
             var archivosAdjuntos = resultado.Select((resultado, indice) => new ArchivosAdjuntos
             {

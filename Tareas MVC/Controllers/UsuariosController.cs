@@ -212,7 +212,7 @@ namespace Tareas_MVC.Controllers
             }).ToListAsync();
 
             var modelo = new UsuariosListadoViewModel();
-            modelo.Usuarios= usuario;   
+            modelo.Usuarios = usuario;   
             modelo.Mensajes = mensaje;
             return View(modelo);    
         }

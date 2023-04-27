@@ -59,8 +59,8 @@ builder.Services.AddLocalization(opciones =>
 });
 
 builder.Services.AddTransient<IServiciosUsuarios, ServiciosUsuarios>();
-
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosLocal>();
 
 var app = builder.Build();
 
