@@ -11,12 +11,12 @@ namespace Tareas_MVC.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IAlmacenadorArchivos almacenadorArchivos;
-        private readonly ServiciosUsuarios serviciosUsuario;
+        private readonly IServiciosUsuarios serviciosUsuario;
         private readonly string contenedor = "archivosadjuntos";
 
         public ArchivosController(ApplicationDbContext context, 
                                   IAlmacenadorArchivos almacenadorArchivos, 
-                                  ServiciosUsuarios serviciosUsuario)
+                                  IServiciosUsuarios serviciosUsuario)
         {
             this.context = context;
             this.almacenadorArchivos = almacenadorArchivos;
@@ -68,6 +68,53 @@ namespace Tareas_MVC.Controllers
 
             await context.SaveChangesAsync();
             return archivosAdjuntos.ToList();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(Guid id, [FromBody] string titulo)
+        {
+            var usuarioId = serviciosUsuario.ObtenerUsuarioId();
+
+            var archivoAdjunto = await context.ArchivosAdjuntos.Include(a => a.Tarea).FirstOrDefaultAsync(a => a.Id == id);
+
+            if(archivoAdjunto is null)
+            {
+                return NotFound();
+            }
+
+            if(archivoAdjunto.Tarea.UsuarioCreacionId != usuarioId)
+            {
+                return Forbid();
+            }
+
+            archivoAdjunto.Titulo = titulo;
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+
+            var usuarioId = serviciosUsuario.ObtenerUsuarioId();
+
+            var archivoAdjunto = await context.ArchivosAdjuntos.Include(a => a.Tarea).FirstOrDefaultAsync(a => a.Id == id);
+
+            if(archivoAdjunto is null)
+            {
+                return NotFound();  
+            }
+
+            if(archivoAdjunto.Tarea.UsuarioCreacionId != usuarioId)
+            {
+                return Forbid();
+            }
+
+            context.Remove(archivoAdjunto);
+            await context.SaveChangesAsync();
+            await almacenadorArchivos.Borrar(archivoAdjunto.Url, contenedor);
+            return Ok();
+
         }
     }
 }

@@ -45,6 +45,7 @@ namespace Tareas_MVC.Controllers
 
             var tarea = await _context.Tareas
                 .Include(t => t.Pasos.OrderBy(t => t.Orden))
+                .Include(t => t.ArchivosAdjuntos.OrderBy(p => p.Orden))
                 .FirstOrDefaultAsync(t => t.Id == id && t.UsuarioCreacionId == usuarioId);
 
             if (tarea is null)

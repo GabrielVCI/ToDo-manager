@@ -135,6 +135,8 @@ async function manejarClickTarea(tarea) {
         )
     })
 
+    prepararArchivosAdjuntos(json.archivosAdjuntos);
+
     modalEditarTareaBootstrap.show();
 }
 
@@ -218,7 +220,7 @@ async function borrarTarea(tarea) {
 }
 
 function obtenerIndiceTareaEnEdicion() {
-    return ListadoTareasViewModel.tarea().findIndex(t => t.id == tareaEditarViewModel.id)
+    return ListadoTareasViewModel.tarea().findIndex(t => t.id() == tareaEditarViewModel.id)
 }
 
 function obtenerTareaEnEdicion() {

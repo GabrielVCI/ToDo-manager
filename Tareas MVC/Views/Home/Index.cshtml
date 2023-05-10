@@ -131,6 +131,16 @@
 
         }
 
+        function archivoAdjuntoVM({id, titulo, publicado, modoEdicion, orden, url}){
+            var self = this;
+            self.id = id;
+            self.titulo = ko.observable(titulo || '');
+            self.publicado = publicado;
+            self.modoEdicion = ko.observable(modoEdicion);
+            self.orden = orden;
+            self.url = url;
+        }
+
         ObtenerTareas();
 
         ko.applyBindings(ListadoTareasViewModel, document.getElementById('contenedor-listado-tareas'));

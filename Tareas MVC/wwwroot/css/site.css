@@ -24,3 +24,7 @@ body {
 [name=tarea]:hover{
     background-color: dodgerblue;
 }
+
+btn {
+    color: none
+}
